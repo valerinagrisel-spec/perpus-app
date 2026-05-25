@@ -45,13 +45,33 @@
                 Detail
             </a>
 
-            |
+        <td>
+
+            <a href="{{ route('books.show', $book->id) }}">
+                Detail
+            </a>
+
+            @if(auth()->user()->role == 'member')
+
+            <form action="{{ route('borrow.store', $book->id) }}"
+                method="POST"
+                style="display:inline">
+
+                @csrf
+
+                <button type="submit">
+                    Pinjam
+                </button>
+
+            </form>
+
+            @endif
+
+            @if(auth()->user()->role == 'admin')
 
             <a href="{{ route('books.edit', $book->id) }}">
                 Edit
             </a>
-
-            |
 
             <form action="{{ route('books.destroy', $book->id) }}"
                 method="POST"
@@ -60,14 +80,40 @@
                 @csrf
                 @method('DELETE')
 
-                <button type="submit"
-                    onclick="return confirm('Yakin hapus buku?')">
-
+                <button type="submit">
                     Hapus
-
                 </button>
 
             </form>
+
+            @endif
+
+        </td>
+
+
+        |
+
+        <a href="{{ route('books.edit', $book->id) }}">
+            Edit
+        </a>
+
+        |
+
+        <form action="{{ route('books.destroy', $book->id) }}"
+            method="POST"
+            style="display:inline">
+
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                onclick="return confirm('Yakin hapus buku?')">
+
+                Hapus
+
+            </button>
+
+        </form>
 
         </td>
 
