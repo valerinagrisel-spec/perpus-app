@@ -1,27 +1,136 @@
 @extends('layouts.app')
 
 @section('content')
-<h3>Edit Kategori</h3>
 
-@if($errors->any())
-<ul style="color:red;">
-    @foreach($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
+<style>
+    .edit-container {
+        padding: 40px;
+    }
 
-<form action="{{ route('categories.update', $category) }}" method="POST">
-    @csrf
-    @method('PUT')
+    .edit-title {
+        font-size: 55px;
+        font-weight: bold;
+        margin-bottom: 35px;
+    }
 
-    <label>Nama Kategori</label><br>
-    <input type="text" name="name" value="{{ old('name', $category->name) }}"><br><br>
+    .edit-card {
+        background: white;
+        max-width: 700px;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
 
-    <label>Deskripsi</label><br>
-    <textarea name="description">{{ old('description', $category->description) }}</textarea><br><br>
+    .form-group {
+        margin-bottom: 25px;
+    }
 
-    <button type="submit">Update</button>
-    <a href="{{ route('categories.index') }}">Kembali</a>
-</form>
+    .form-label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .update-button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .cancel-button {
+        background: #e5e7eb;
+        color: #374151;
+        padding: 12px 22px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+
+<div class="edit-container">
+
+    <div class="edit-title">
+        Edit Kategori
+    </div>
+
+    <div class="edit-card">
+
+        <form action="{{ route('categories.update', $category->id) }}"
+            method="POST">
+
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Nama Kategori
+                </label>
+
+                <input type="text"
+                    name="name"
+                    value="{{ $category->name }}"
+                    class="form-input">
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Deskripsi
+                </label>
+
+                <textarea name="description"
+                    rows="5"
+                    class="form-input">{{ $category->description }}</textarea>
+
+            </div>
+
+            <div class="button-group">
+
+                <button type="submit"
+                    class="update-button">
+
+                    Update
+
+                </button>
+
+                <a href="{{ route('categories.index') }}"
+                    class="cancel-button">
+
+                    Kembali
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 @endsection

@@ -2,125 +2,128 @@
 
 @section('content')
 
-<h1>Daftar Buku</h1>
+<h2 class="page-title">Daftar Buku</h2>
 
-@if(session('success'))
-<p style="color:green">
-    {{ session('success') }}
-</p>
-@endif
+@if(auth()->user()->role == 'admin')
 
-<a href="{{ route('books.create') }}">
-    Tambah Buku
+<a href="{{ route('books.create') }}"
+    class="btn btn-primary mb-4">
+
+    + Tambah Buku
+
 </a>
 
-<br><br>
+@endif
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>No</th>
-        <th>Judul</th>
-        <th>Author</th>
-        <th>Kategori</th>
-        <th>Stock</th>
-        <th>Aksi</th>
-    </tr>
+<div class="card card-custom p-3">
 
-    @foreach($books as $book)
+    <div class="table-responsive">
 
-    <tr>
-        <td>{{ $loop->iteration }}</td>
+        <table class="table table-hover align-middle">
 
-        <td>{{ $book->title }}</td>
+            <thead class="table-dark">
 
-        <td>{{ $book->author }}</td>
+                <tr>
+                    <th>No</th>
+                    <th>Judul</th>
+                    <th>Author</th>
+                    <th>Kategori</th>
+                    <th>Stock</th>
+                    <th width="250">Aksi</th>
+                </tr>
 
-        <td>{{ $book->category->name }}</td>
+            </thead>
 
-        <td>{{ $book->stock }}</td>
+            <tbody>
 
-        <td>
+                @foreach($books as $book)
 
-            <a href="{{ route('books.show', $book->id) }}">
-                Detail
-            </a>
+                <tr>
 
-        <td>
+                    <td>{{ $loop->iteration }}</td>
 
-            <a href="{{ route('books.show', $book->id) }}">
-                Detail
-            </a>
+                    <td>
+                        <strong>{{ $book->title }}</strong>
+                    </td>
 
-            @if(auth()->user()->role == 'member')
+                    <td>{{ $book->author }}</td>
 
-            <form action="{{ route('borrow.store', $book->id) }}"
-                method="POST"
-                style="display:inline">
+                    <td>
+                        <span class="badge bg-secondary">
+                            {{ $book->category->name }}
+                        </span>
+                    </td>
 
-                @csrf
+                    <td>{{ $book->stock }}</td>
 
-                <button type="submit">
-                    Pinjam
-                </button>
+                    <td>
 
-            </form>
+                        <a href="{{ route('books.show', $book->id) }}"
+                            class="btn btn-info btn-sm text-white">
 
-            @endif
+                            Detail
 
-            @if(auth()->user()->role == 'admin')
+                        </a>
 
-            <a href="{{ route('books.edit', $book->id) }}">
-                Edit
-            </a>
+                        @if(auth()->user()->role == 'member')
 
-            <form action="{{ route('books.destroy', $book->id) }}"
-                method="POST"
-                style="display:inline">
+                        <form action="{{ route('borrow.store', $book->id) }}"
+                            method="POST"
+                            class="d-inline">
 
-                @csrf
-                @method('DELETE')
+                            @csrf
 
-                <button type="submit">
-                    Hapus
-                </button>
+                            <button type="submit"
+                                class="btn btn-success btn-sm">
 
-            </form>
+                                Pinjam
 
-            @endif
+                            </button>
 
-        </td>
+                        </form>
 
+                        @endif
 
-        |
+                        @if(auth()->user()->role == 'admin')
 
-        <a href="{{ route('books.edit', $book->id) }}">
-            Edit
-        </a>
+                        <a href="{{ route('books.edit', $book->id) }}"
+                            class="btn btn-warning btn-sm">
 
-        |
+                            Edit
 
-        <form action="{{ route('books.destroy', $book->id) }}"
-            method="POST"
-            style="display:inline">
+                        </a>
 
-            @csrf
-            @method('DELETE')
+                        <form action="{{ route('books.destroy', $book->id) }}"
+                            method="POST"
+                            class="d-inline">
 
-            <button type="submit"
-                onclick="return confirm('Yakin hapus buku?')">
+                            @csrf
+                            @method('DELETE')
 
-                Hapus
+                            <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin hapus buku?')">
 
-            </button>
+                                Hapus
 
-        </form>
+                            </button>
 
-        </td>
+                        </form>
 
-    </tr>
+                        @endif
 
-    @endforeach
+                    </td>
 
-</table>
+                </tr>
+
+                @endforeach
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 @endsection
