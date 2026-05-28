@@ -153,6 +153,7 @@
                                 method="POST">
 
                                 @csrf
+                                @method('PUT')
 
                                 <button type="submit"
                                     class="return-button">
